@@ -6,7 +6,14 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs', 'prisma/__generated__/*'],
+    ignores: [
+      'eslint.config.mjs',
+      'prisma/generated/*',
+      'docker-compose.yaml',
+      'docker-compose.override.yaml',
+      '*.yml',
+      '*.yaml',
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,

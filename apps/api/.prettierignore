@@ -1,0 +1,20 @@
+# Ignore node_modules and build outputs
+node_modules/
+dist/
+coverage/
+
+# Ignore configuration files that don't need formatting
+.env
+.env.*
+package-lock.json
+
+# Ignore Docker and infrastructure files
+docker-compose.yaml
+
+# Prisma
+prisma/generated/
+prisma/migrations/
+
+# Static assets
+public/
+assets/
