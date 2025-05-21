@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  
+  db:
+    image: postgres:17.2
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7.2
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks: 
+  backend:
