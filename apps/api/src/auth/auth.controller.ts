@@ -21,6 +21,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('protected')
   getAll(@Request() request: { user: { id: number } }) {
-    return 'Now you can see this protected route. This is your user id: ' + request.user.id;
+    return {
+      message: 'Now you can see this protected route. This is your user id: ' + request.user.id,
+    };
   }
 }

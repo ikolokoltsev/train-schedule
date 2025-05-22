@@ -6,6 +6,7 @@ const AppBar = () => {
     <div className="p-2 shadow flex gap-4 bg-gradient-to-br from-blue-400 to-slate-400 text-white">
       <Link href={"/"}>Home</Link>
       <Link href={"/schedule"}>Schedule</Link>
+      <Link href={"/profile"}>Profile</Link>
       <AuthButton />
     </div>
   );

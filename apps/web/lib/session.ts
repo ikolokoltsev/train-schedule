@@ -23,7 +23,6 @@ export async function createSession(payload: Session) {
     .setIssuedAt()
     .setExpirationTime("7d")
     .sign(encodedSecret);
-
   const cookieStore = await cookies();
   cookieStore.set("session", session, {
     httpOnly: true,
@@ -46,7 +45,7 @@ export async function getSession() {
     });
     return payload as Session;
   } catch (error) {
-    console.log("Session verification error:", error);
+    console.error("Session verification error:", error);
     redirect("/auth/signin");
   }
 }
