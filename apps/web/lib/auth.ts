@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { BACKEND_URL } from "./constant";
-import { FormState, SignUpFormSchema } from "./type";
+import { FormState, LoginFormSchema, SignUpFormSchema } from "./type";
 
 export async function SignUp(
   state: FormState,
@@ -37,6 +37,43 @@ export async function SignUp(
     return {
       message:
         response.status === 409 ? "User already exists" : response.statusText,
+    };
+  }
+}
+
+export async function signIn(
+  state: FormState,
+  fromData: FormData
+): Promise<FormState> {
+  const validatedFields = LoginFormSchema.safeParse({
+    email: fromData.get("email"),
+    password: fromData.get("password"),
+  });
+
+  if (!validatedFields.success) {
+    const error = validatedFields.error.flatten();
+    return {
+      error: {
+        email: error.fieldErrors.email?.[0] || "",
+        password: error.fieldErrors.password ?? [""],
+        name: "",
+      },
+    };
+  }
+  const response = await fetch(`${BACKEND_URL}/auth/signin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(validatedFields.data),
+  });
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+  } else {
+    return {
+      message:
+        response.status === 401 ? "Invalid credentials" : response.statusText,
     };
   }
 }
