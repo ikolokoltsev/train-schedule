@@ -19,7 +19,7 @@ export class AuthService {
     }
     return this.userService.create(createUserDto);
   }
-  async validateLocalUSer(email: string, password: string) {
+  async validateLocalUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
     if (!user) throw new UnauthorizedException('User not found');
     if (!user.password) throw new UnauthorizedException('User password not set');

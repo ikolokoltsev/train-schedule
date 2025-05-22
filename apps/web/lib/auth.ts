@@ -72,7 +72,7 @@ export async function signIn(
     const data = await response.json();
     await createSession({
       user: {
-        id: data.userId,
+        id: data.id,
         name: data.name,
       },
       accessToken: data.accessToken,
