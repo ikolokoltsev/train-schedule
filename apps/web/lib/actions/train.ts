@@ -1,19 +1,9 @@
 "use server";
 import { redirect } from "next/navigation";
 import { BACKEND_URL } from "../constant";
-import { TrainFormSchema, TrainFormState } from "../type";
-export type Train = {
-  id: number;
-  number: string;
-  name: string;
-  type: string;
-  departureStation: string;
-  arrivalStation: string;
-  departureTime: string;
-  arrivalTime: string;
-};
+import { TrainFormSchema, TrainFormState, TrainFormValues } from "../type";
 
-export async function getAllTrains(): Promise<Train[]> {
+export async function getAllTrains(): Promise<TrainFormValues[]> {
   const response = await fetch(`${BACKEND_URL}/train`, {
     cache: "no-store",
   });
