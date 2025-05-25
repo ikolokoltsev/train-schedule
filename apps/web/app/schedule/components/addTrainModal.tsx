@@ -23,6 +23,14 @@ export function AddTrainModal() {
     undefined
   );
 
+  const trainFields = [
+    { name: "number", label: "Train Number" },
+    { name: "name", label: "Name" },
+    { name: "type", label: "Type" },
+    { name: "departureStation", label: "Departure Station" },
+    { name: "arrivalStation", label: "Arrival Station" },
+  ] as const;
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -46,16 +54,11 @@ export function AddTrainModal() {
         <form
           action={async (formData: FormData) => {
             await action(formData);
+            setOpen(false);
           }}
           className="space-y-4"
         >
-          {[
-            { name: "number", label: "Train Number" },
-            { name: "name", label: "Name" },
-            { name: "type", label: "Type" },
-            { name: "departureStation", label: "Departure Station" },
-            { name: "arrivalStation", label: "Arrival Station" },
-          ].map(({ name, label }) => (
+          {trainFields.map(({ name, label }) => (
             <div key={name}>
               <Label htmlFor={name}>{label}</Label>
               <Input id={name} name={name} required />
