@@ -13,17 +13,19 @@ export class CreateTrainDto {
   @IsNotEmpty()
   type: string;
 
-  @IsDateString()
-  departureTime: Date;
-
   @IsString()
   @IsNotEmpty()
   departureStation: string;
 
-  @IsDateString()
-  arrivalTime: Date;
-
   @IsString()
   @IsNotEmpty()
   arrivalStation: string;
+
+  @IsDateString()
+  @IsNotEmpty()
+  departureTime: string;
+
+  @IsDateString()
+  @IsNotEmpty()
+  arrivalTime: string;
 }
