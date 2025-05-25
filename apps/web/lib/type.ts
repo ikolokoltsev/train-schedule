@@ -53,3 +53,14 @@ export type TrainFormState =
       message?: string;
     }
   | undefined;
+
+export type Train = {
+  id: number;
+  number: string;
+  name: string;
+  type: string;
+  departureStation: string;
+  arrivalStation: string;
+  departureTime: string;
+  arrivalTime: string;
+};

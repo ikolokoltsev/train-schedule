@@ -1,9 +1,9 @@
 "use server";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { BACKEND_URL } from "../constant";
-import { TrainFormSchema, TrainFormState, TrainFormValues } from "../type";
+import { Train, TrainFormSchema, TrainFormState } from "../type";
 
-export async function getAllTrains(): Promise<TrainFormValues[]> {
+export async function getAllTrains(): Promise<Train[]> {
   const response = await fetch(`${BACKEND_URL}/train`, {
     cache: "no-store",
   });
@@ -13,7 +13,7 @@ export async function getAllTrains(): Promise<TrainFormValues[]> {
 }
 
 export async function addTrain(
-  state: TrainFormState,
+  _: TrainFormState,
   formData: FormData
 ): Promise<TrainFormState> {
   const validationFields = TrainFormSchema.safeParse({
@@ -47,7 +47,7 @@ export async function addTrain(
   });
 
   if (response.ok) {
-    redirect("/schedule");
+    revalidatePath("/schedule");
   } else {
     return {
       message:
@@ -55,5 +55,34 @@ export async function addTrain(
           ? "Train number already exists"
           : response.statusText,
     };
+  }
+}
+
+export async function deleteTrainAction(
+  _: unknown,
+  formData: FormData
+): Promise<{ success?: boolean; message?: string }> {
+  const id = formData.get("id");
+
+  if (!id || typeof id !== "string") {
+    return { message: "Invalid train ID" };
+  }
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/train/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      const msg = await res.text();
+      return { message: msg };
+    }
+
+    revalidatePath("/schedule");
+    return { success: true };
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "An unexpected error occurred";
+    return { message: "Failed to delete train: " + message };
   }
 }
