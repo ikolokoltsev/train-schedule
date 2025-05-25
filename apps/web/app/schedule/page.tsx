@@ -1,7 +1,7 @@
 import { getAllTrains } from "@/lib/actions/train";
-import { AddTrainModal } from "./addTrainModal";
 import { columns } from "./columns";
-import { DataTable } from "./dataTable";
+import { AddTrainModal } from "./components/addTrainModal";
+import { DataTable } from "./components/dataTable";
 
 export default async function SchedulePage() {
   const trains = await getAllTrains();

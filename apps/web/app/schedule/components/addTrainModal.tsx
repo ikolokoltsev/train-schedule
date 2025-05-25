@@ -43,16 +43,6 @@ export function AddTrainModal() {
           </div>
         )}
 
-        {state?.message && (
-          <div className="text-red-500 text-sm">
-            {typeof state.error === "string"
-              ? state.error
-              : Object.values(state.message).map((message, idx) => (
-                  <div key={idx}>{message}</div>
-                ))}
-          </div>
-        )}
-
         <form
           action={async (formData: FormData) => {
             await action(formData);
