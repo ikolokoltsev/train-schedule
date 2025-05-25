@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import LoadingButton from "@/components/ui/loadingButton";
-import { SignUp } from "@/lib/auth";
+import { SignUp } from "@/lib//actions/auth";
 import { useActionState } from "react";
 
 const SignUpForm = () => {
