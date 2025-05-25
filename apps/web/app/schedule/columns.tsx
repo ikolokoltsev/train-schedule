@@ -1,9 +1,10 @@
 "use client";
 
-import { TrainFormValues } from "@/lib/type";
+import { Train } from "@/lib/type";
 import { ColumnDef } from "@tanstack/react-table";
+import { DeleteTrainButton } from "./components/deleteTrainButton";
 
-export const columns: ColumnDef<TrainFormValues>[] = [
+export const columns: ColumnDef<Train>[] = [
   { accessorKey: "number", header: "Number" },
   { accessorKey: "name", header: "Name" },
   { accessorKey: "type", header: "Type" },
@@ -26,5 +27,13 @@ export const columns: ColumnDef<TrainFormValues>[] = [
         dateStyle: "short",
         timeStyle: "short",
       }),
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const train = row.original;
+      return <DeleteTrainButton id={train.id} number={train.number} />;
+    },
   },
 ];
