@@ -1,4 +1,9 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTrainDto } from './dto/create-train.dto';
 
@@ -43,5 +48,15 @@ export class TrainService {
         arrivalTime: arrivalTime.toISOString(),
       },
     });
+  }
+
+  async remove(id: number) {
+    const train = await this.prisma.train.findUnique({ where: { id } });
+    if (!train) {
+      throw new NotFoundException(`Train with ID ${id} not found`);
+    }
+
+    await this.prisma.train.delete({ where: { id } });
+    return { message: `Train ${id} deleted.` };
   }
 }
