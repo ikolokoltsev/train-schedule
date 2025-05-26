@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
   UseInterceptors,
@@ -37,5 +38,10 @@ export class TrainController {
   @Put(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() updateTrainDto: UpdateTrainDto) {
     return this.trainService.update(id, updateTrainDto);
+  }
+
+  @Patch(':id')
+  patch(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateTrainDto) {
+    return this.trainService.patch(id, dto);
   }
 }

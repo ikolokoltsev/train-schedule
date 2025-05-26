@@ -78,4 +78,25 @@ export class TrainService {
       },
     });
   }
+
+  async patch(id: number, dto: UpdateTrainDto) {
+    const existing = await this.prisma.train.findUnique({ where: { id } });
+    if (!existing) throw new NotFoundException(`Train ${id} not found`);
+
+    // Optional: Validate datetime format before saving
+    const patchData = {
+      ...dto,
+      ...(dto.departureTime && {
+        departureTime: new Date(dto.departureTime).toISOString(),
+      }),
+      ...(dto.arrivalTime && {
+        arrivalTime: new Date(dto.arrivalTime).toISOString(),
+      }),
+    };
+
+    return this.prisma.train.update({
+      where: { id },
+      data: patchData,
+    });
+  }
 }
