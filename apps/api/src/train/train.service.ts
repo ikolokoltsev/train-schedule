@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTrainDto } from './dto/create-train.dto';
+import { UpdateTrainDto } from './dto/update-train.dto';
 
 @Injectable()
 export class TrainService {
@@ -58,5 +59,23 @@ export class TrainService {
 
     await this.prisma.train.delete({ where: { id } });
     return { message: `Train ${id} deleted.` };
+  }
+
+  async update(id: number, updateTrainDto: UpdateTrainDto) {
+    const train = await this.prisma.train.findUnique({ where: { id } });
+    if (!train) throw new NotFoundException(`Train ID ${id} not found`);
+
+    return this.prisma.train.update({
+      where: { id },
+      data: {
+        number: updateTrainDto.number,
+        name: updateTrainDto.name,
+        type: updateTrainDto.type,
+        departureStation: updateTrainDto.departureStation,
+        arrivalStation: updateTrainDto.arrivalStation,
+        departureTime: new Date(updateTrainDto.departureTime!).toISOString(),
+        arrivalTime: new Date(updateTrainDto.arrivalTime!).toISOString(),
+      },
+    });
   }
 }

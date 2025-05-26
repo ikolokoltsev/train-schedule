@@ -6,10 +6,12 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseInterceptors,
 } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CreateTrainDto } from './dto/create-train.dto';
+import { UpdateTrainDto } from './dto/update-train.dto';
 import { TrainService } from './train.service';
 
 @Controller('train')
@@ -30,5 +32,10 @@ export class TrainController {
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.trainService.remove(id);
+  }
+
+  @Put(':id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateTrainDto: UpdateTrainDto) {
+    return this.trainService.update(id, updateTrainDto);
   }
 }
