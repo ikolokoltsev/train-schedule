@@ -129,3 +129,37 @@ export async function editTrainAction(
     };
   }
 }
+
+export async function updateTrainField(
+  _: unknown,
+  formData: FormData
+): Promise<{ success?: boolean; message?: string }> {
+  const id = formData.get("id");
+  const key = formData.get("key");
+  const value = formData.get("value");
+
+  if (
+    !id ||
+    typeof id !== "string" ||
+    typeof key !== "string" ||
+    typeof value !== "string"
+  ) {
+    return { message: "Invalid update input." };
+  }
+
+  const res = await fetch(`${BACKEND_URL}/train/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ [key]: value }),
+  });
+
+  if (res.ok) {
+    revalidatePath("/schedule");
+    const msg = await res.text();
+    return { message: msg || "Failed to update field" };
+  } else {
+    return {
+      message: "Failed to update field. Please try again.",
+    };
+  }
+}
