@@ -9,7 +9,8 @@ export async function getAllTrains(): Promise<Train[]> {
   });
 
   if (!response.ok) throw new Error("Failed to fetch trains");
-  return response.json();
+  const trains = await response.json();
+  return trains;
 }
 
 export async function addTrain(
@@ -84,5 +85,47 @@ export async function deleteTrainAction(
     const message =
       err instanceof Error ? err.message : "An unexpected error occurred";
     return { message: "Failed to delete train: " + message };
+  }
+}
+
+export async function editTrainAction(
+  _: TrainFormState,
+  formData: FormData
+): Promise<TrainFormState> {
+  const values = Object.fromEntries(formData.entries());
+
+  const id = values.id;
+  if (!id || typeof id !== "string") {
+    return { message: "Invalid train ID" };
+  }
+
+  const validated = TrainFormSchema.safeParse(values);
+  if (!validated.success) {
+    const error = validated.error.flatten().fieldErrors;
+    return {
+      error: {
+        number: error.number?.[0] || "",
+        name: error.name?.[0] || "",
+        type: error.type?.[0] || "",
+        departureStation: error.departureStation?.[0] || "",
+        arrivalStation: error.arrivalStation?.[0] || "",
+        departureTime: error.departureTime?.[0] || "",
+        arrivalTime: error.arrivalTime?.[0] || "",
+      },
+    };
+  }
+
+  const res = await fetch(`${BACKEND_URL}/train/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(validated.data),
+  });
+
+  if (res.ok) {
+    revalidatePath("/schedule");
+  } else {
+    return {
+      message: "Failed to update train. Please try again.",
+    };
   }
 }

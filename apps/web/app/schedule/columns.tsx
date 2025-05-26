@@ -3,6 +3,7 @@
 import { Train } from "@/lib/type";
 import { ColumnDef } from "@tanstack/react-table";
 import { DeleteTrainButton } from "./components/deleteTrainButton";
+import { EditTrainModal } from "./components/editTrainModal";
 
 export const columns: ColumnDef<Train>[] = [
   { accessorKey: "number", header: "Number" },
@@ -33,7 +34,12 @@ export const columns: ColumnDef<Train>[] = [
     header: "Actions",
     cell: ({ row }) => {
       const train = row.original;
-      return <DeleteTrainButton id={train.id} number={train.number} />;
+      return (
+        <div className="flex items-center gap-4">
+          <EditTrainModal initialValues={train} />
+          <DeleteTrainButton id={train.id} number={train.number} />
+        </div>
+      );
     },
   },
 ];
