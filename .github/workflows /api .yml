@@ -1,12 +1,11 @@
-# .github/workflows/deploy-api.yml
 name: Deploy Backend to Railway
 
 on:
   push:
     paths:
-      - 'apps/api/**'
-      - 'app/api/prisma/**'
-      - 'pnpm-lock.yaml'
+      - "apps/api/**"
+      - "app/api/prisma/**"
+      - "pnpm-lock.yaml"
 
 jobs:
   deploy:
@@ -21,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - run: pnpm install
 
