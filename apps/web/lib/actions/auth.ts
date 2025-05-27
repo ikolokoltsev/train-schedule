@@ -1,9 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { BACKEND_URL } from "./constant";
-import { createSession } from "./session";
-import { FormState, LoginFormSchema, SignUpFormSchema } from "./type";
+import { BACKEND_URL } from "../constant";
+import { createSession } from "../session";
+import { FormState, LoginFormSchema, SignUpFormSchema } from "../type";
 
 export async function SignUp(
   state: FormState,
